@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Dashboard</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- navbars -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+        <span class="brand-fin">Fin</span><span class="brand-ance">ance</span>
+        <span class="brand-tracker-light"> Tracker</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+        <li class="nav-item">
+          <a class="nav-link" href="#dashboard">
+            <i class="fa-solid fa-chart-pie" style="font-size:11px; margin-right:4px;"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#insights">
+            <i class="fa-solid fa-lightbulb" style="font-size:11px; margin-right:4px;"></i>Insights
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#transaction">
+            <i class="fa-solid fa-arrow-right-arrow-left" style="font-size:11px; margin-right:4px;"></i>Transactions
+          </a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <span class="navbar-label">Role:</span>
+        <select id="roleSelect" class="form-select" style="width:auto;">
+            <option value="">-- Select --</option>
+            <option value="admin">Admin</option>
+            <option value="viewer">Viewer</option>
+        </select>
+        <button class="nav-action-btn export-btn" onclick="exportCSV()">
+            <i class="fa-solid fa-download" style="font-size:12px;"></i> Export CSV
+        </button>
+        <button class="nav-action-btn dark-toggle" id="darkToggle" onclick="toggleDark()">
+            <i class="fa-solid fa-moon" id="darkIcon" style="font-size:12px;"></i>
+            <span id="darkLabel">Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- deshboard-->
+<section id="dashboard">
+<div class="container">
+    <h3 class="section-heading">Dashboard</h3>
+    <div class="row g-4">
+        <!-- Balance Card -->
+        <div class="col-lg-4 col-md-6">
+            <div class="custom-card card-balance">
+                <span class="card-watermark material-symbols-outlined">account_balance_wallet</span>
+                <div class="card-inner">
+                    <div class="card-icon-wrap icon-balance">
+                        <span class="material-symbols-outlined" style="font-size:24px;">account_balance_wallet</span>
+                    </div>
+                    <div class="card-label card-label-balance">Net Balance</div>
+                    <div class="card-amount">
+                        <span class="card-symbol">₹</span><span id="balance">0</span>
+                    </div>
+                    <div class="card-footer-info">
+                        <span class="card-dot dot-balance"></span>
+                        <span>Updated just now</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Income Card -->
+        <div class="col-lg-4 col-md-6">
+            <div class="custom-card card-income">
+                <span class="card-watermark material-symbols-outlined">trending_up</span>
+                <div class="card-inner">
+                    <div class="card-icon-wrap icon-income">
+                        <span class="material-symbols-outlined" style="font-size:24px;">trending_up</span>
+                    </div>
+                    <div class="card-label card-label-income">Total Income</div>
+                    <div class="card-amount">
+                        <span class="card-symbol">₹</span><span id="income">0</span>
+                    </div>
+                    <div class="card-footer-info">
+                        <span class="card-dot dot-income"></span>
+                        <span>Updated just now</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Expense Card -->
+        <div class="col-lg-4 col-md-6">
+            <div class="custom-card card-expense">
+                <span class="card-watermark material-symbols-outlined">trending_down</span>
+                <div class="card-inner">
+                    <div class="card-icon-wrap icon-expense">
+                        <span class="material-symbols-outlined" style="font-size:24px;">trending_down</span>
+                    </div>
+                    <div class="card-label card-label-expense">Expenditure</div>
+                    <div class="card-amount">
+                        <span class="card-symbol">₹</span><span id="expenditure">0</span>
+                    </div>
+                    <div class="card-footer-info">
+                        <span class="card-dot dot-expense"></span>
+                        <span>Updated just now</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="container mt-4">
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">
+                    Income vs Expenses
+                </div>
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">
+                    Expense Breakdown
+                </div>
+                <canvas id="piChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- insights-->
+<div class="container">
+    
+<section id="insights" class="mt-5 mb-3">
+    <h3 class="section-heading">Insights</h3>
+    <div class="row g-3">
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="insight-card ic-purple">
+                <div class="insight-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#7c3aed" viewBox="0 0 640 640"><path d="M118.2 126.4C101.5 120.8 92.4 102.6 98 85.9C103.6 69.2 121.7 60.1 138.5 65.6L251.5 103.3C265.4 79.8 291.1 64 320.4 64C364.6 64 400.4 99.8 400.4 144C400.4 147 400.2 149.9 399.9 152.8L522.5 193.7C539.3 199.3 548.3 217.4 542.7 234.2C537.1 251 519 260 502.2 254.4L366.7 209.2C362.2 212.4 357.4 215.1 352.3 217.4L352.3 544.1C352.3 561.8 338 576.1 320.3 576.1L128.3 576.1C110.6 576.1 96.3 561.8 96.3 544.1C96.3 526.4 110.6 512.1 128.3 512.1L288.3 512.1L288.3 217.4C267.3 208.2 251.1 190.4 244.1 168.4L118.2 126.4zM200.8 352L128.3 227.8L55.9 352L200.8 352zM128.4 448C65.5 448 13.2 414 2.4 369.1C-.2 358.1 3.4 346.8 9.1 337L104.3 173.8C109.3 165.2 118.5 160 128.4 160C138.3 160 147.5 165.3 152.5 173.8L247.7 337C253.4 346.8 257 358.1 254.4 369.1C243.6 413.9 191.3 448 128.4 448zM511.2 355.8L438.8 480L583.7 480L511.3 355.8zM637.2 497.1C626.4 542 574.1 576 511.2 576C448.3 576 396 542 385.2 497.1C382.6 486.1 386.2 474.8 391.9 465L487.1 301.8C492.1 293.2 501.3 288 511.2 288C521.1 288 530.3 293.3 535.3 301.8L630.5 465C636.2 474.8 639.8 486.1 637.2 497.1z"/></svg>
+                </div>
+                <div class="insight-label">Highest Transaction</div>
+                <div class="insight-value">₹ <span id="high_transaction">—</span></div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="insight-card ic-pink">
+                <div class="insight-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ec4899" viewBox="0 0 640 640"><path d="M320 32C373 32 416 75 416 128C416 181 373 224 320 224C267 224 224 181 224 128C224 75 267 32 320 32zM80 368C80 297.9 127 236.6 197.1 203.1C222.4 244.4 268 272 320 272C375.7 272 424.1 240.3 448 194C463.8 182.7 483.1 176 504 176L523.5 176C533.9 176 541.5 185.8 539 195.9L521.9 264.2C531.8 276.6 540.1 289.9 546.3 304L568 304C581.3 304 592 314.7 592 328L592 440C592 453.3 581.3 464 568 464L528 464C511.5 486 489.5 503.6 464 514.7L464 544C464 561.7 449.7 576 432 576L399 576C384.7 576 372.2 566.5 368.2 552.8L361.1 528L278.8 528L271.7 552.8C267.8 566.5 255.3 576 241 576L208 576C190.3 576 176 561.7 176 544L176 514.7C119.5 490 80 433.6 80 368zM456 384C469.3 384 480 373.3 480 360C480 346.7 469.3 336 456 336C442.7 336 432 346.7 432 360C432 373.3 442.7 384 456 384z"/></svg>
+                </div>
+                <div class="insight-label">Savings Rate</div>
+                <div class="insight-value"><span id="sav_per">—</span>%</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="insight-card ic-cyan">
+                <div class="insight-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#06b6d4" viewBox="0 0 640 640"><path d="M224 64C241.7 64 256 78.3 256 96L256 128L384 128L384 96C384 78.3 398.3 64 416 64C433.7 64 448 78.3 448 96L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 96C192 78.3 206.3 64 224 64zM160 304L160 336C160 344.8 167.2 352 176 352L208 352C216.8 352 224 344.8 224 336L224 304C224 295.2 216.8 288 208 288L176 288C167.2 288 160 295.2 160 304zM288 304L288 336C288 344.8 295.2 352 304 352L336 352C344.8 352 352 344.8 352 336L352 304C352 295.2 344.8 288 336 288L304 288C295.2 288 288 295.2 288 304zM432 288C423.2 288 416 295.2 416 304L416 336C416 344.8 423.2 352 432 352L464 352C472.8 352 480 344.8 480 336L480 304C480 295.2 472.8 288 464 288L432 288zM160 432L160 464C160 472.8 167.2 480 176 480L208 480C216.8 480 224 472.8 224 464L224 432C224 423.2 216.8 416 208 416L176 416C167.2 416 160 423.2 160 432zM304 416C295.2 416 288 423.2 288 432L288 464C288 472.8 295.2 480 304 480L336 480C344.8 480 352 472.8 352 464L352 432C352 423.2 344.8 416 336 416L304 416zM416 432L416 464C416 472.8 423.2 480 432 480L464 480C472.8 480 480 472.8 480 464L480 432C480 423.2 472.8 416 464 416L432 416C423.2 416 416 423.2 416 432z"/></svg>
+                </div>
+                <div class="insight-label">Last Transaction</div>
+                <div class="insight-value" style="font-size:0.95rem;"><span id="L_T">—</span></div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="insight-card ic-green">
+                <div class="insight-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#22c55e" viewBox="0 0 640 640"><path d="M160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 160C544 124.7 515.3 96 480 96L160 96zM296 408L296 344L232 344C218.7 344 208 333.3 208 320C208 306.7 218.7 296 232 296L296 296L296 232C296 218.7 306.7 208 320 208C333.3 208 344 218.7 344 232L344 296L408 296C421.3 296 432 306.7 432 320C432 333.3 421.3 344 408 344L344 344L344 408C344 421.3 333.3 432 320 432C306.7 432 296 421.3 296 408z"/></svg>
+                </div>
+                <div class="insight-label">Total Transactions</div>
+                <div class="insight-value"><span id="T_T">—</span></div>
+            </div>
+        </div>
+
+        <!-- Spending chart & suggestion -->
+        <div class="col-lg-6 col-12 mt-2">
+            <div class="chart-card" style="height:100%;">
+                <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">
+                    Spending by Category
+                </div>
+                <canvas id="spending_chart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6 col-12 mt-2">
+            <div class="chart-card" style="height:100%;">
+                <div style="font-family:'Barlow',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">
+                    Spending Suggestion
+                </div>
+                <img src="assessts/new (3).jpg" style="width:100%;height:200px;object-fit:cover;border-radius:10px;" alt="spending visual">
+                <div class="suggestion-card mt-3">
+                    <p id="suggesstion" style="margin:0; line-height:1.6;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+<!--transaction -->
+<section id="transaction" class="mt-5">
+<div class="container">
+    <h3 class="section-heading">Transactions</h3>
+</div>
+<!-- admin only-->
+<div class="container mt-3" id="hide" style="display:none;">
+    <div class="form-section-card mb-3">
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">
+            <i class="fa-solid fa-plus" style="margin-right:6px;"></i>Add Transaction
+        </div>
+        <div class="row g-2">
+            <div class="col-lg-2 col-md-6 col-12"><input type="date" id="date" class="form-control" placeholder="Date"></div>
+            <div class="col-lg-2 col-md-6 col-12"><input id="description" class="form-control" placeholder="Description"></div>
+            <div class="col-lg-3 col-md-6 col-12"><input id="type" class="form-control" placeholder="Type (income/expenditure)"></div>
+            <div class="col-lg-2 col-md-6 col-12"><input id="amount" class="form-control" placeholder="Amount"></div>
+            <div class="col-lg-3 col-md-6 col-12"><button class="btn btn-primary w-100" style="border-radius:10px;" onclick="add()">
+                <i class="fa-solid fa-plus" style="margin-right:6px;font-size:12px;"></i>Add Transaction
+            </button></div>
+        </div>
+    </div>
+
+    <!-- search-->
+    <div class="form-section-card">
+        <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">
+            <i class="fa-solid fa-magnifying-glass" style="margin-right:6px;"></i>Search Transactions
+        </div>
+        <div class="row g-2">
+            <div class="col-lg-3 col-md-6 col-12"><input id="search_date" class="form-control" placeholder="Search Date"></div>
+            <div class="col-lg-3 col-md-6 col-12"><input id="search_description" class="form-control" placeholder="Search Description"></div>
+            <div class="col-lg-3 col-md-6 col-12"><input id="search_type" class="form-control" placeholder="Search Type"></div>
+            <div class="col-lg-3 col-md-6 col-12"><button class="btn btn-primary w-100" style="border-radius:10px;" onclick="search()">
+                <i class="fa-solid fa-magnifying-glass" style="margin-right:6px;font-size:12px;"></i>Search
+            </button></div>
+        </div>
+    </div>
+</div>
+
+<!--sortings-->
+<div class="container mt-3">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <span style="font-size:0.75rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted);">Sort:</span>
+        <button class="sort-btn" id="sortDateBtn" onclick="sortBy('date')">
+            <i class="fa-solid fa-calendar-days" style="font-size:11px;"></i> Date
+            <span id="sortDateDir"></span>
+        </button>
+        <button class="sort-btn" id="sortAmtBtn" onclick="sortBy('amount')">
+            <i class="fa-solid fa-indian-rupee-sign" style="font-size:11px;"></i> Amount
+            <span id="sortAmtDir"></span>
+        </button>
+        <button class="sort-btn" id="clearSortBtn" onclick="clearSort()" style="display:none;">
+            <i class="fa-solid fa-xmark" style="font-size:11px;"></i> Clear
+        </button>
+    </div>
+</div>
+
+<!--tables-->
+<div class="container mt-3">
+    <div class="table-responsive-wrapper">
+        <table class="table table-striped table-bordered align-middle" style="border-radius:14px;overflow:hidden;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th id="actionsHeader" style="display:none;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="transaction_data"></tbody>
+        </table>
+    </div>
+</div>
+</section>
+
+<!-- footer -->
+<div class="site-footer">
+    <i class="fa-solid fa-chart-line" style="margin-right:6px; color:var(--accent);"></i>
+    Finance Tracker &nbsp;·&nbsp; Stay on top of your money
+</div>
+
+<!--edit -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <h5><i class="fa-solid fa-pen" style="color:var(--accent); margin-right:8px; font-size:16px;"></i>Edit Transaction</h5>
+        <input type="hidden" id="editIndex">
+        <input type="date" id="editDate" class="form-control" placeholder="Date">
+        <input type="text" id="editDesc" class="form-control" placeholder="Description">
+        <input type="text" id="editType" class="form-control" placeholder="Type (income/expenditure)">
+        <input type="number" id="editAmt" class="form-control" placeholder="Amount">
+        <div class="modal-actions">
+            <button class="btn btn-secondary" style="border-radius:10px;" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary" style="border-radius:10px;" onclick="saveEdit()">
+                <i class="fa-solid fa-check" style="margin-right:4px;"></i>Save
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
